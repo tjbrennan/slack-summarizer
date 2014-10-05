@@ -38,7 +38,7 @@ function parseCommand (req, res, next) {
   // set bot name, message, channel
   bot.username = 'sumbot';
   bot.channel = '#' + channel;
-  bot.icon = ':scroll:';
+  bot.icon_emoji = ':scroll:';
   bot.api = {
     token : apiToken,
     channel : {
@@ -48,7 +48,6 @@ function parseCommand (req, res, next) {
 
   // stash bot
   res.bot = bot;
-  console.log(res.bot);
   next();
 }
 
@@ -69,7 +68,7 @@ function getChannel (req, res, next) {
       }
 
       if (res.statusCode === 200 && body.ok) {
-        console.log(JSON.stringify(body));
+        console.log(body.channel.unread_count);
 
         if (body.channel.unread_count) {
           res.bot.api.channel = {
@@ -106,7 +105,7 @@ function getMessages (req, res, next) {
       }
 
       if (res.statusCode === 200 && body.ok) {
-        console.log(JSON.stringify(body));
+        //console.log(JSON.stringify(body));
         res.bot.api.messages = body.messages;
         next();
       } else {
@@ -122,6 +121,7 @@ function summarize (req, res, next) {
       content += message.text + '.\n';
   });
 
+  console.log(content);
   SummaryTool.summarize('', content, function (error, summary) {
     if (error) {
       return next(error);
