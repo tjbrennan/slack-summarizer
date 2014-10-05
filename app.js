@@ -33,16 +33,22 @@ function parseCommand (req, res, next) {
     next('API token needed!');
   }
 
+  console.log(req.body);
+
   // set bot name, message, channel
   bot.username = 'sumbot';
   bot.channel = '#' + channel;
   bot.icon = ':scroll:';
   bot.api = {
-    token : apiToken
+    token : apiToken,
+    channel : {
+      channelId : channelId
+    }
   };
 
   // stash bot
   res.bot = bot;
+  console.log(res.bot);
   next();
 }
 
@@ -63,6 +69,8 @@ function getChannel (req, res, next) {
       }
 
       if (res.statusCode === 200 && body.ok) {
+        console.log(JSON.stringify(body));
+
         if (body.channel.unread_count) {
           res.bot.api.channel = {
             unread : body.channel.unread_count,
@@ -98,6 +106,7 @@ function getMessages (req, res, next) {
       }
 
       if (res.statusCode === 200 && body.ok) {
+        console.log(JSON.stringify(body));
         res.bot.api.messages = body.messages;
         next();
       } else {
