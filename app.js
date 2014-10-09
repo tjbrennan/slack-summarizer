@@ -10,11 +10,6 @@ var app = express();
 var port = process.env.PORT || 3000;
 
 var args = process.argv;
-var team = args[2];
-var token = args[3];
-var apiToken = args[4];
-var apiCache = {};
-
 var command = '/summary';
 
 
@@ -32,8 +27,15 @@ app.use(function (req, res, next) {
   next();
 });
 
+// store args
+app.use(function (req, res, next) {
+  res.locals.team = args[2];
+  res.locals.token = args[3];
+  res.locals.apiToken = args[4];
+})
 
-app.post('/summarize', summary);
+
+app.post('/summarize', summary, function (req, res) { res.status(200).end() });
 
 
 // error handler
