@@ -3,7 +3,7 @@
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
-var summary = require('/lib/summary');
+var summary = require('./lib/summary');
 
 
 var app = express();
@@ -32,6 +32,7 @@ app.use(function (req, res, next) {
   res.locals.team = args[2];
   res.locals.token = args[3];
   res.locals.apiToken = args[4];
+  next();
 })
 
 
